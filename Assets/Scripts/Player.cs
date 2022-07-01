@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,11 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float forwardVelocity = 5f;
 
     private Rigidbody rb;
+    private bool isInvincible;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    private void Awake() => rb = GetComponent<Rigidbody>();
 
     private void FixedUpdate()
     {
@@ -20,31 +17,44 @@ public class Player : MonoBehaviour
         HorizontalMovement();
     }
 
+    private bool IsMouseOverUI() => UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+
     private void VerticalMovement()
     {
         bool isPressed = Input.GetMouseButton(0);
-        if (isPressed)
-        {
+        if (isPressed && !IsMouseOverUI())
             rb.AddForce(Vector3.up * upwardVelocity * Time.fixedDeltaTime, ForceMode.Force);
-        }
         else
-        {
             rb.AddForce(Vector3.down * downwardVelocity * Time.fixedDeltaTime);
-        }
     }
 
-    private void HorizontalMovement()
-    {
-        rb.velocity = new Vector3(0, rb.velocity.y, Mathf.Clamp(rb.velocity.z, forwardVelocity, forwardVelocity));
-       //rb.AddForce(Vector3.forward * forwardVelocity * Time.fixedDeltaTime);
-    }
+    private void HorizontalMovement() => rb.velocity = new Vector3(0, rb.velocity.y, Mathf.Clamp(rb.velocity.z, forwardVelocity, forwardVelocity));
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void CollisionWithObstacles(Collision collision)
     {
+        if (isInvincible == true) return;
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            // TODO: Show Game Over UI and Retry button
             Destroy(gameObject);
+            // TODO: Show Game Over UI and Retry button
+        }
+    }
+
+    public void SetPlayerInvincible() => StartCoroutine(BecomeInvincibleForCertainDuration());
+
+    private IEnumerator BecomeInvincibleForCertainDuration()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(3f);
+        isInvincible = false;
+    }
+    private void OnCollisionEnter(Collision collision) => CollisionWithObstacles(collision);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<ICollectable>(out ICollectable collectable))
+        {
+            collectable.OnCollection();
         }
     }
 }

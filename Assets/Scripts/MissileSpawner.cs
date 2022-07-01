@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MissileSpawner : MonoBehaviour
@@ -17,10 +15,7 @@ public class MissileSpawner : MonoBehaviour
         cam = Camera.main;
         zDistance = Mathf.Abs(cam.transform.position.z - transform.position.z);
     }
-    private void Start()
-    {
-        nextTimeStamp = Random.Range(minTimeToSpawn, maxTimeToSpawn);
-    }
+    private void Start() => nextTimeStamp = Random.Range(minTimeToSpawn, maxTimeToSpawn);
 
     private void Update()
     {
@@ -33,11 +28,7 @@ public class MissileSpawner : MonoBehaviour
         }
     }
 
-    private void KeepingDistance()
-    {
-        Debug.Log(transform.position);
-        transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z + zDistance);    
-    }
+    private void KeepingDistance() => transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z + zDistance);
 
     private Vector3 AssignRandomHeight()
     {
@@ -53,11 +44,11 @@ public class MissileSpawner : MonoBehaviour
         instanceObject.transform.position = returnedValue;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(floor, 0.2f);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(ceiling, 0.2f);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawSphere(floor, 0.2f);
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawSphere(ceiling, 0.2f);
+    //}
 }
