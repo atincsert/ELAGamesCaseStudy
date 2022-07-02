@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float downwardVelocity = 500f, upwardVelocity = 1000f;
     [SerializeField] private float forwardVelocity = 5f;
+    [SerializeField] private float invincibilityDuration = 3f;
 
     private Rigidbody rb;
     private bool isInvincible;
@@ -28,7 +29,8 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.down * downwardVelocity * Time.fixedDeltaTime);
     }
 
-    private void HorizontalMovement() => rb.velocity = new Vector3(0, rb.velocity.y, Mathf.Clamp(rb.velocity.z, forwardVelocity, forwardVelocity));
+    private void HorizontalMovement() => rb.velocity = new Vector3
+        (0, rb.velocity.y, Mathf.Clamp(rb.velocity.z, forwardVelocity, forwardVelocity));
 
 
     private void CollisionWithObstacles(Collision collision)
@@ -46,13 +48,13 @@ public class Player : MonoBehaviour
     private IEnumerator BecomeInvincibleForCertainDuration()
     {
         isInvincible = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(invincibilityDuration);
         isInvincible = false;
     }
     private void OnCollisionEnter(Collision collision) => CollisionWithObstacles(collision);
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<ICollectable>(out ICollectable collectable))
+        if (other.TryGetComponent(out ICollectable collectable))
         {
             collectable.OnCollection();
         }

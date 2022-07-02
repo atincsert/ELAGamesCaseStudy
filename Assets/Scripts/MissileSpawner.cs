@@ -28,7 +28,8 @@ public class MissileSpawner : MonoBehaviour
         }
     }
 
-    private void KeepingDistance() => transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z + zDistance);
+    private void KeepingDistance() => transform.position = new Vector3
+        (transform.position.x, transform.position.y, cam.transform.position.z + zDistance);
 
     private Vector3 AssignRandomHeight()
     {
@@ -43,12 +44,4 @@ public class MissileSpawner : MonoBehaviour
         var instanceObject = Instantiate(missilePrefab);
         instanceObject.transform.position = returnedValue;
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawSphere(floor, 0.2f);
-    //    Gizmos.color = Color.blue;
-    //    Gizmos.DrawSphere(ceiling, 0.2f);
-    //}
 }
