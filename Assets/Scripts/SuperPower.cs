@@ -6,10 +6,10 @@ public class SuperPower : MonoBehaviour
     [SerializeField] private Button superPowerButton;
     
     private Camera cam;
-    private bool isAvailable;
+    private bool isAvailable = true;
+
     private void Awake() => cam = Camera.main;
 
-    private void Start() => isAvailable = true;
     public void ActivateSuperPower()
     {
         if (isAvailable)

@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float downwardVelocity = 500f, upwardVelocity = 1000f;
     [SerializeField] private float forwardVelocity = 5f;
     [SerializeField] private float invincibilityDuration = 3f;
+    [SerializeField] private GameObject loseScreen;
 
     private Rigidbody rb;
     private bool isInvincible;
@@ -39,7 +41,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             Destroy(gameObject);
-            // TODO: Show Game Over UI and Retry button
+            loseScreen.SetActive(true);
         }
     }
 

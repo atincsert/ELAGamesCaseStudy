@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class FinishLevel : MonoBehaviour
 {
-    private float sceneCount;
+    [SerializeField] private GameObject winScreen;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Player>() != null)
-        {
-            if (sceneCount > 2) SceneManager.LoadScene(0);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
+        winScreen.SetActive(true);
     }
 }
